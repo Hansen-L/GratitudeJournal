@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if page_num %}
+            {% if posts.page == page_num %}
+                <a class="btn btn-info mb-4" href="{{ url_for('main.home', page=page_num) }}"> {{ page_num }}</a>
+            {% else %}
+                <a class="btn btn-outline-info mb-4" href="{{ url_for('main.home', page=page_num) }}"> {{ page_num }}</a>
+            {% endif %}
+
+        {% else %}
+            ...
+        {% endif %}
+    {% endfor %}
+    {% set i = 0 %}
+    {% for i in range(0, per_page, 3) %}
+        {% if i < (posts.items|length) %}
+            {% set post = posts.items[i] %}
+                <article class="media content-section">
+                  <div class="media-body">
+                    <div class="article-metadata">
+                        <h3 class="article-title mb-3"><a href="{{ url_for('posts.update_post', y=post.date_posted.year, m=post.date_posted.month, d=post.date_posted.day) }}">
+                            {{ post.date_posted.strftime('%Y-%m-%d') }}
+                        </a></h3>
+                    </div>
+                      {% for post in posts.items[i:(i+3)] %}
+                        <h6><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h6>
+                        <p class="article-content">{{ post.content }}</p>
+                        {% if post != posts.items[i+2] %} <hr> {% endif %}
+                      {% endfor %}
+                  </div>
+                </article>
+        {% endif %}
+    {% endfor %}
+    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if page_num %}
+            {% if posts.page == page_num %}
+                <a class="btn btn-info mb-4" href="{{ url_for('main.home', page=page_num) }}"> {{ page_num }}</a>
+            {% else %}
+                <a class="btn btn-outline-info mb-4" href="{{ url_for('main.home', page=page_num) }}"> {{ page_num }}</a>
+            {% endif %}
+
+        {% else %}
+            ...
+        {% endif %}
+    {% endfor %}
+{% endblock content %}
